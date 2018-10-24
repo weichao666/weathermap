@@ -1,9 +1,11 @@
 inputs:
+  cse-address:
+    default: 'https://cse.cn-north-1.myhuaweicloud.com:443'
   forecast_service_container_image:
-    default: 'swr.cn-north-1.myhuaweicloud.com/default/forecast:2.0.0'
+    default: 'swr.cn-north-1.myhuaweicloud.com/weichaotest/forecast:0.0.2'
     type: string
   fusionweather_service_container_image:
-    default: 'swr.cn-north-1.myhuaweicloud.com/default/fusionweather:2.0.0'
+    default: 'swr.cn-north-1.myhuaweicloud.com/weichaotest/fusionweather:0.0.2'
   limit_cpu:
     default: 500m
     type: string
@@ -16,11 +18,11 @@ inputs:
     default: weathermap_app
     type: string
   weather_beta_service_container_image:
-    default: 'swr.cn-north-1.myhuaweicloud.com/default/weather-beta:2.0.0'
+    default: 'swr.cn-north-1.myhuaweicloud.com/weichaotest/weather-beta:0.0.2'
   weather_service_container_image:
-    default: 'swr.cn-north-1.myhuaweicloud.com/default/weather:2.0.0'
+    default: 'swr.cn-north-1.myhuaweicloud.com/weichaotest/weather:0.0.2'
   weathermapweb_service_container_image:
-    default: 'swr.cn-north-1.myhuaweicloud.com/default/weathermapweb:2.0.0'
+    default: 'swr.cn-north-1.myhuaweicloud.com/weichaotest/weathermapweb:0.0.2'
 node_templates:
 
   #### forecast
@@ -57,6 +59,9 @@ node_templates:
                   ports:
                     - containerPort: 13091
                       protocol: TCP
+                  env:
+                    - name: PAAS_CSE_ENDPOINT
+                      value: 'https://cse.cn-north-1.myhuaweicloud.com:443'
                   resources:
                     limits:
                       cpu: {get_input: limit_cpu}
@@ -126,6 +131,9 @@ node_templates:
                   ports:
                     - containerPort: 13090
                       protocol: TCP
+                  env:
+                    - name: PAAS_CSE_ENDPOINT
+                      value: 'https://cse.cn-north-1.myhuaweicloud.com:443'
                   resources:
                     limits:
                       cpu: {get_input: limit_cpu}
@@ -195,6 +203,9 @@ node_templates:
                   ports:
                     - containerPort: 13093
                       protocol: TCP
+                  env:
+                    - name: PAAS_CSE_ENDPOINT
+                      value: 'https://cse.cn-north-1.myhuaweicloud.com:443'
                   resources:
                     limits:
                       cpu: {get_input: limit_cpu}
@@ -264,6 +275,9 @@ node_templates:
                   ports:
                     - containerPort: 13092
                       protocol: TCP
+                  env:
+                    - name: PAAS_CSE_ENDPOINT
+                      value: 'https://cse.cn-north-1.myhuaweicloud.com:443'
                   resources:
                     limits:
                       cpu: {get_input: limit_cpu}
