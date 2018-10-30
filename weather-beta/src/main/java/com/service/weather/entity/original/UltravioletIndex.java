@@ -3,6 +3,8 @@ package com.service.weather.entity.original;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.annotation.Generated;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Generated("com.robohorse.robopojogenerator")
 public class UltravioletIndex
@@ -71,5 +73,17 @@ public class UltravioletIndex
     public double getLat()
     {
         return lat;
+    }
+
+    public static UltravioletIndex defaultUltravioletIndex(double lat, double lon) {
+        UltravioletIndex index = new UltravioletIndex();
+        index.setLat(22.54);
+        index.setLon(114.05);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String currentDateString = format.format(new Date());
+        index.setDateIso(currentDateString + "T12:00:00Z");
+        index.setDate(1540900800);
+        index.setValue((double) 8.46);
+        return index;
     }
 }

@@ -100,6 +100,28 @@ public class WeatherData
         this.cod = cod;
     }
 
+    public static WeatherData defaultWeatherData(String city) {
+        WeatherData weatherData = new WeatherData();
+        weatherData.setCoord(new Coord(22.54, 114.05));
+        Weather weather2 = new Weather((long) 800, "Clear", "clear sky", "01d");
+        List<Weather> weather = new ArrayList<Weather>();
+        weather.add(weather2);
+        weatherData.setWeather(weather);
+        weatherData.setBase("stations");
+        Main main = new Main(28.67, (long) 1013, (long) 23, (double) 27, (double) 30);
+        weatherData.setMain(main);
+        weatherData.setWind(new Wind(4.1, (double) 20));
+        weatherData.setClouds(new Clouds((long) 0));
+        weatherData.setDt((long) 1540881000);
+        Sys sys = new Sys((long)1, (long)7888, 0.0052, "CN", (long)1540852022, (long)1540892852);
+        weatherData.setSys(sys);
+        weatherData.setId((long) 1795565);
+        weatherData.setName(city);
+        weatherData.setCod((long) 200);
+
+        return weatherData;
+    }
+
     /**
      * @return The coord
      */

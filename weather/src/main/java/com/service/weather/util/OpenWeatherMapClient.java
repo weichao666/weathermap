@@ -37,30 +37,34 @@ public class OpenWeatherMapClient {
 		city = StringUtils.isNotBlank(city) ? city : DEFAULT;
 
 		CurrentWeatherSummary summary = new CurrentWeatherSummary();
+		WeatherData weatherData;
 		try {
-			WeatherData weatherData = restTemplate
+			weatherData = restTemplate
 					.getForObject(String.format(URL, APP_KEY, city), WeatherData.class);
 
-			summary.setCityName(weatherData.getName());
-			summary.setCountry(weatherData.getSys().getCountry());
-			summary.setTemperature(weatherData.getMain().getTemp());
-			summary.setImage(weatherData.getWeather().get(0).getIcon());
-			summary.setDate(weatherData.getDt());
-			summary.setWeather(weatherData.getWeather().get(0).getDescription());
-			summary.setWindSpeed(weatherData.getWind().getSpeed());
-			summary.setCloudiness(weatherData.getWeather().get(0).getDescription());
-			summary.setCloudsDeg(weatherData.getClouds().getAll());
-			summary.setPressure(weatherData.getMain().getPressure());
-			summary.setHumidity(weatherData.getMain().getHumidity());
-			summary.setSunrise(weatherData.getSys().getSunrise());
-			summary.setSunset(weatherData.getSys().getSunset());
-			summary.setCoordinatesLon(weatherData.getCoord().getLon());
-			summary.setCoordinatesLat(weatherData.getCoord().getLat());
 		} catch (Exception e) {
 			LOGGER.error("Failed to get the current weather data from OpenWeatherMap with " + city, e);
 			
 			swtichURL();
+			LOGGER.warn("use the mocked weather data from local with " + city);
+			weatherData = WeatherData.defaultWeatherData(city);
+
 		}
+		summary.setCityName(weatherData.getName());
+		summary.setCountry(weatherData.getSys().getCountry());
+		summary.setTemperature(weatherData.getMain().getTemp());
+		summary.setImage(weatherData.getWeather().get(0).getIcon());
+		summary.setDate(weatherData.getDt());
+		summary.setWeather(weatherData.getWeather().get(0).getDescription());
+		summary.setWindSpeed(weatherData.getWind().getSpeed());
+		summary.setCloudiness(weatherData.getWeather().get(0).getDescription());
+		summary.setCloudsDeg(weatherData.getClouds().getAll());
+		summary.setPressure(weatherData.getMain().getPressure());
+		summary.setHumidity(weatherData.getMain().getHumidity());
+		summary.setSunrise(weatherData.getSys().getSunrise());
+		summary.setSunset(weatherData.getSys().getSunset());
+		summary.setCoordinatesLon(weatherData.getCoord().getLon());
+		summary.setCoordinatesLat(weatherData.getCoord().getLat());
 
 		return summary;
 	}

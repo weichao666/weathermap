@@ -32,6 +32,20 @@ public class Main
     @JsonProperty("temp_max")
     private double tempMax;
 
+    public Main() {
+    }
+
+    public Main(double temp, double tempMin, double tempMax, double pressure, double seaLevel, double grndLevel, double humidity, double tempKf) {
+        this.temp = temp;
+        this.tempMin = tempMin;
+        this.grndLevel = grndLevel;
+        this.tempKf = tempKf;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        this.seaLevel = seaLevel;
+        this.tempMax = tempMax;
+    }
+
     public double getTemp()
     {
         return temp;

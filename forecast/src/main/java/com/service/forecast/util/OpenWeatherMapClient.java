@@ -44,27 +44,31 @@ public class OpenWeatherMapClient {
 		city = StringUtils.isNotBlank(city) ? city : DEFAULT;
 
 		ForecastSummary summary = new ForecastSummary();
+		ForecastData forecastData;
 		try {
-			ForecastData forecastData = restTemplate.getForObject(String.format(URL, APP_KEY, city),
+			forecastData = restTemplate.getForObject(String.format(URL, APP_KEY, city),
 					ForecastData.class);
 
 			LOGGER.info("end showForecastWeather from openweather cost " + (System.currentTimeMillis() - l));
 
-			summary.setCityName(forecastData.getCity().getName());
-			summary.setCountry(forecastData.getCity().getCountry());
-			summary.setCoordinatesLat(forecastData.getCity().getCoord().getLat());
-			summary.setCoordinatesLon(forecastData.getCity().getCoord().getLon());
 
-			List<DateListItem> dateListItemList = new ArrayList<DateListItem>();
-			for (ListItem i : forecastData.getList()) {
-				dateListItemList.add(toDateListItem(i));
-			}
-			summary.setDateList(dateListItemList);
 		} catch (Exception e) {
 			LOGGER.error("Failed to get the forecast weather data form OpenWeatherMap with " + city, e);
 
 			swtichURL();
+			LOGGER.warn("use the mocked forecast weather data from local with " + city);
+			forecastData = ForecastData.defaultForecastData(city);
 		}
+		summary.setCityName(forecastData.getCity().getName());
+		summary.setCountry(forecastData.getCity().getCountry());
+		summary.setCoordinatesLat(forecastData.getCity().getCoord().getLat());
+		summary.setCoordinatesLon(forecastData.getCity().getCoord().getLon());
+
+		List<DateListItem> dateListItemList = new ArrayList<DateListItem>();
+		for (ListItem i : forecastData.getList()) {
+			dateListItemList.add(toDateListItem(i));
+		}
+		summary.setDateList(dateListItemList);
 
 		return summary;
 	}
