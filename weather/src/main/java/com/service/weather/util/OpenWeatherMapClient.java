@@ -38,18 +38,9 @@ public class OpenWeatherMapClient {
 
 		CurrentWeatherSummary summary = new CurrentWeatherSummary();
 		WeatherData weatherData;
-		try {
-			weatherData = restTemplate
-					.getForObject(String.format(URL, APP_KEY, city), WeatherData.class);
+		LOGGER.warn("use the mocked weather data from local with " + city);
+		weatherData = WeatherData.defaultWeatherData(city);
 
-		} catch (Exception e) {
-			LOGGER.error("Failed to get the current weather data from OpenWeatherMap with " + city, e);
-			
-			swtichURL();
-			LOGGER.warn("use the mocked weather data from local with " + city);
-			weatherData = WeatherData.defaultWeatherData(city);
-
-		}
 		summary.setCityName(weatherData.getName());
 		summary.setCountry(weatherData.getSys().getCountry());
 		summary.setTemperature(weatherData.getMain().getTemp());

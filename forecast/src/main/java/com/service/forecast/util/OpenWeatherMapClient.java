@@ -45,20 +45,9 @@ public class OpenWeatherMapClient {
 
 		ForecastSummary summary = new ForecastSummary();
 		ForecastData forecastData;
-		try {
-			forecastData = restTemplate.getForObject(String.format(URL, APP_KEY, city),
-					ForecastData.class);
+		LOGGER.warn("use the mocked forecast weather data from local with " + city);
+		forecastData = ForecastData.defaultForecastData(city);
 
-			LOGGER.info("end showForecastWeather from openweather cost " + (System.currentTimeMillis() - l));
-
-
-		} catch (Exception e) {
-			LOGGER.error("Failed to get the forecast weather data form OpenWeatherMap with " + city, e);
-
-			swtichURL();
-			LOGGER.warn("use the mocked forecast weather data from local with " + city);
-			forecastData = ForecastData.defaultForecastData(city);
-		}
 		summary.setCityName(forecastData.getCity().getName());
 		summary.setCountry(forecastData.getCity().getCountry());
 		summary.setCoordinatesLat(forecastData.getCity().getCoord().getLat());

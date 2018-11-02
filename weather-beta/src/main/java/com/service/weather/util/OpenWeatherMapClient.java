@@ -47,16 +47,9 @@ public class OpenWeatherMapClient {
 
 		CurrentWeatherSummary summary = new CurrentWeatherSummary();
 		WeatherData weatherData;
-		try {
-			weatherData = restTemplate
-					.getForObject(String.format(WEATHER_URL_HTTP, APP_KEY, city), WeatherData.class);
+		LOGGER.warn("use the mocked weather data with " + city);
+		weatherData = WeatherData.defaultWeatherData(city);
 
-		} catch (Exception e) {
-			LOGGER.error("Failed to get the current weather data from OpenWeatherMap with " + city, e);
-			swtichURL();
-			LOGGER.warn("use the mocked weather data with " + city);
-			weatherData = WeatherData.defaultWeatherData(city);
-		}
 		summary.setCityName(weatherData.getName());
 		summary.setCountry(weatherData.getSys().getCountry());
 		summary.setTemperature(weatherData.getMain().getTemp());
@@ -77,17 +70,9 @@ public class OpenWeatherMapClient {
 		lon = weatherData.getCoord().getLon();
 
 		UltravioletIndex ultravioletIndex;
-		try {
-			ultravioletIndex = restTemplate
-					.getForObject(String.format(UVI_URL, APP_KEY,lat, lon), UltravioletIndex.class);
+		LOGGER.warn("use the mocked ultraviolet index data from local with " + lat + ":" + lon);
+		ultravioletIndex = UltravioletIndex.defaultUltravioletIndex(lat, lon);
 
-
-		} catch (Exception e) {
-			LOGGER.error("Failed to get the ultraviolet index data from OpenWeatherMap with " + lat + ":" + lon, e);
-			swtichURL();
-            LOGGER.warn("use the mocked ultraviolet index data from local with " + lat + ":" + lon);
-			ultravioletIndex = UltravioletIndex.defaultUltravioletIndex(lat, lon);
-		}
 		summary.setUviDate(ultravioletIndex.getDate());
 		summary.setUviDateISO(ultravioletIndex.getDateIso());
 		summary.setUviValue(ultravioletIndex.getValue());
